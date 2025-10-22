@@ -49,6 +49,9 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <h:inputTextarea id="reponse" value="#{bb.reponse}" title="Réponse" cols="50" rows="15"/>
+                    <h:commandButton id="debugbutton" value="#{bb.debug?'Mode Normal':'Mode Debug'}"
+                                     action="#{bb.toggleDebug()}"/>
+
                     <h:panelGrid id="paneldebug" columns="1" rendered="#{bb.debug}">
                         <h:panelGroup>
                             <h:outputText value="JSON envoyé dans la requête :"/>
@@ -64,8 +67,6 @@
                                          cols="50" rows="15" readonly="true"/>
                     </h:panelGrid>
                 </h:panelGrid>
-                <h:commandButton id="debugbutton" value="#{bb.debug?'Mode Normal':'Mode Debug'}"
-                                 action="#{bb.toggleDebug()}"/>
                 <h:panelGrid id="paneldroit" columns="1" style="vertical-align: top;">
                     <h:panelGroup>
                         <h:outputText value="Conversation :"/>

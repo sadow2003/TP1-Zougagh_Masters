@@ -219,6 +219,13 @@ public class Bb implements Serializable {
                     are you tell them the average price of a meal.
                     """;
             this.listeRolesSysteme.add(new SelectItem(role, "Guide touristique"));
+
+            role = """
+                    You are a motivating fitness coach.
+                    Give the user simple workout advice or healthy eating tips.
+                    Keep your answers short and encouraging.
+                    """;
+            this.listeRolesSysteme.add(new SelectItem(role, "Coach Sportif"));
         }
 
         return this.listeRolesSysteme;
