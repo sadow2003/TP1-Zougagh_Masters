@@ -47,9 +47,9 @@
                             <h:outputText value="Réponse :"/>
                             <button onclick="copyToClipboard('reponse')">Copier réponse</button>
                         </h:panelGroup>
-                        <h:inputTextarea id="reponse" value="#{bb.reponse}" title="Réponse"
-                                         cols="50" rows="15"/>
                     </h:panelGrid>
+                    <h:inputTextarea id="reponse" value="#{bb.reponse}" title="Réponse"
+                                     cols="50" rows="15"/>
                     <h:panelGrid id="paneldebug" columns="1" rendered="#{bb.debug}">
                         <h:panelGroup>
                             <h:outputText value="JSON envoyé dans la requête :"/>

@@ -3,6 +3,7 @@ package ma.emsi.zougagh.tp0zougagh_mounsif.llm;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.json.*;
+import jakarta.json.Json;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
@@ -213,5 +214,6 @@ public class JsonUtilPourGemini implements Serializable {
             return messageReponse.getJsonArray("parts").getJsonObject(0).getString("text");
         }
     }
+
 
 }

@@ -6,6 +6,9 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import ma.emsi.zougagh.tp0zougagh_mounsif.llm.JsonUtilPourGemini;
+import ma.emsi.zougagh.tp0zougagh_mounsif.llm.LlmClientPourGemini;
+import ma.emsi.zougagh.tp0zougagh_mounsif.llm.LlmInteraction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,6 +63,10 @@ public class Bb implements Serializable {
     @Inject
     private FacesContext facesContext;
     private boolean debug;
+    private String texteRequeteJson;
+    private String texteReponseJson;
+    @Inject
+    private JsonUtilPourGemini jsonUtil;
 
     /**
      * Obligatoire pour un bean CDI (classe gérée par CDI), s'il y a un autre constructeur.
@@ -118,23 +125,33 @@ public class Bb implements Serializable {
      */
     public String envoyer() {
         if (question == null || question.isBlank()) {
-            // Erreur ! Le formulaire va être réaffiché en réponse à la requête POST, avec un message d'erreur.
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Texte question vide", "Il manque le texte de la question");
             facesContext.addMessage(null, message);
             return null;
         }
-        // Entourer la réponse avec "||".
-        this.reponse = "||";
-        // Si la conversation n'a pas encore commencé, ajouter le rôle système au début de la réponse
+
+        // Si c’est la première question, définir le rôle système
         if (this.conversation.isEmpty()) {
-            // Ajouter le rôle système au début de la réponse
-            this.reponse += roleSysteme.toUpperCase(Locale.FRENCH) + "\n";
-            // Invalide le bouton pour changer le rôle système
+            jsonUtil.setSystemRole(this.roleSysteme);
             this.roleSystemeChangeable = false;
         }
-        this.reponse += question.toLowerCase(Locale.FRENCH) + "||";
-        // La conversation contient l'historique des questions-réponses depuis le début.
+
+        try {
+            LlmInteraction interaction = jsonUtil.envoyerRequete(question);
+            this.reponse = interaction.reponseExtraite();
+            this.texteRequeteJson = interaction.questionJson();
+            this.texteReponseJson = interaction.reponseJson();
+        } catch (Exception e) {
+            FacesMessage message = new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR,
+                    "Problème de connexion avec l'API du LLM",
+                    "Problème de connexion avec l'API du LLM : " + e.getMessage()
+            );
+            facesContext.addMessage(null, message);
+            return null;
+        }
+
         afficherConversation();
         return null;
     }
@@ -189,16 +206,15 @@ public class Bb implements Serializable {
 
         return this.listeRolesSysteme;
     }
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+    public boolean isDebug() {
+        return debug;
+    }
     public void toggleDebug() {
         this.setDebug(!isDebug());
     }
 
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
-    public boolean isDebug() {
-        return debug;
-    }
 }
 
