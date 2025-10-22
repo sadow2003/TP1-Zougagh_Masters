@@ -19,8 +19,9 @@ import java.io.Serializable;
  */
 @Dependent
 public class LlmClientPourGemini implements Serializable {
+    private final String apiKey;
     // Clé pour l'API du LLM
-    private final String key;
+    //private final String key;
     // Client REST. Facilite les échanges avec une API REST.
     private Client clientRest; // Pour pouvoir le fermer
     // Représente un endpoint de serveur REST
@@ -29,13 +30,15 @@ public class LlmClientPourGemini implements Serializable {
     public LlmClientPourGemini() {
         // Récupère la clé secrète pour travailler avec l'API du LLM, mise dans une variable d'environnement
         // du système d'exploitation.
-        //A ECRIRE...
+        this.apiKey = System.getenv("AIzaSyAt-4aEm3UDOqmF9zVzhnCcrXPPtKzMf6I");
+
         // Client REST pour envoyer des requêtes vers les endpoints de l'API du LLM
         this.clientRest = ClientBuilder.newClient();
+
         // Endpoint REST pour envoyer la question à l'API.
         // L'URL à trouver a été utilisé dans la commande curl pour tester la clé secrète.
         // Elle se trouve aussi dans le support de cours.
-        this.target = clientRest.target("A CHERCHER DANS LE COURS...");
+        this.target = clientRest.target("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent");
     }
 
     /**
