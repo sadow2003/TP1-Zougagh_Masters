@@ -65,6 +65,23 @@ public class Bb implements Serializable {
     private boolean debug;
     private String texteRequeteJson;
     private String texteReponseJson;
+    // ... (Ajoutez ceci avec vos autres getters/setters)
+
+    public String getTexteRequeteJson() {
+        return texteRequeteJson;
+    }
+
+    public void setTexteRequeteJson(String texteRequeteJson) {
+        this.texteRequeteJson = texteRequeteJson;
+    }
+
+    public String getTexteReponseJson() {
+        return texteReponseJson;
+    }
+
+    public void setTexteReponseJson(String texteReponseJson) {
+        this.texteReponseJson = texteReponseJson;
+    }
     @Inject
     private JsonUtilPourGemini jsonUtil;
 
